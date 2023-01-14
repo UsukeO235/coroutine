@@ -4,6 +4,10 @@
 #include "coroutine_system_defines.h"
 #include "coroutine_config.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define coroutine_begin(handle) do{switch(handle->state){case 0:
 
 #define coroutine_end(handle) } handle->state = COROUTINE_STATE_INITIAL;}while(0)
@@ -42,5 +46,9 @@ CoroutineErrorCode coroutine_register_task
 );
 
 CoroutineErrorCode coroutine_spin_once();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
