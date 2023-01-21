@@ -19,7 +19,7 @@ CoroutineErrorCode coroutine_init_kernel()
     coroutine_contexts[0].handle.state = COROUTINE_STATE_INITIAL;
     coroutine_contexts[0].task = coroutine_idle_task;
     coroutine_contexts[0].parameters = NULL;
-    coroutine_contexts[0].period = 0;
+    coroutine_contexts[0].period = 1;
     coroutine_contexts[0].priority = COROUTINE_IDLE_TASK_PRIORITY;
     coroutine_contexts[0].ticks_to_wait = 0;
     coroutine_contexts[0].ticks_task_delayed = 0;
@@ -40,6 +40,11 @@ CoroutineErrorCode coroutine_register_task
     struct CoroutineHandle* handle
 )
 {
+    if(period <= 0)
+    {
+        return COROUTINE_ERROR_ARGUMENT_RANGE;
+    }
+
     if(priority < COROUTINE_TASK_LOWEST_PRIORITY)
     {
         return COROUTINE_ERROR_ARGUMENT_RANGE;
