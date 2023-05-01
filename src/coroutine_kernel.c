@@ -116,11 +116,8 @@ CoroutineErrorCode coroutine_spin_once()
                 id = i;
             }
         }
-
-        printf("%u,%u,", coroutine_contexts[i].ticks_to_wait, coroutine_contexts[i].ticks_task_delayed);
     }
 
-    //printf(" %d, ", id);
     coroutine_contexts[id].task(&(coroutine_contexts[id].handle), &(coroutine_contexts[id].parameters));  // タスク実行
 
     
@@ -136,5 +133,4 @@ CoroutineErrorCode coroutine_spin_once()
 
 static void coroutine_idle_task(struct CoroutineHandle* const handle, void* const parameters)
 {
-    printf("[INFO] idle ...\n");
 }
