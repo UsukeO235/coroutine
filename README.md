@@ -49,7 +49,7 @@ void do_something(struct CoroutineHandle* const handle, void* const parameters)
 
     coroutine_begin(handle);
 
-    // coroutine_begin()の直後で変数を初期化する
+    // coroutine_begin()の直後でstatic変数を初期化する / Be sure to initialize static variables immediately after calling coroutine_begin().
     i = 0;
 
     printf("[INFO] do_something():hello 1\n");
