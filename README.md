@@ -16,6 +16,22 @@ A coroutine is a kind of program structures for multitasking.
 
 ### プロジェクトに必要なファイルをコピーする / Copy necessary files into your project
 
+includeフォルダとsrcフォルダを中身ごとコピーし、自分のプロジェクトフォルダにペーストする。
+
+Copy "include" and "src" folders with their contents into your project folder.
+
+```
+your_project_root/
+┣coroutine/
+┃ ┣include/
+┃ ┃ ┣coroutine_config.h
+┃ ┃ ┣coroutine_kernel.h
+┃ ┃ ┗coroutine_system_defines.h
+┃ ┗src/
+┃   ┗coroutine_kernel.c
+┗main.c
+```
+
 ### coroutine_config.hの編集 / Modify coroutine_config.h
 
 ### ヘッダファイルのインクルード / Include necessary header files
@@ -82,7 +98,7 @@ int main(void)
     while(1)
     {
         error_code = coroutine_spin_once();
-        wait_ms(1);
+        wait_ms(1);  // ユーザ定義またはベンダ提供の関数 / User defined or vender provided function
     }
 
     return 0;
