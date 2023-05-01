@@ -46,7 +46,7 @@ void do_something2(struct CoroutineHandle* const handle, void* const parameters)
 int main()
 {
     CoroutineErrorCode error_code = COROUTINE_ERROR_SUCCESS;
-    struct CoroutineHandle handle;
+    struct CoroutineHandle handle1, handle2;
     
     error_code = coroutine_init_kernel();
     if(error_code != COROUTINE_ERROR_SUCCESS)
@@ -55,14 +55,14 @@ int main()
         return 1;
     }
     
-    error_code = coroutine_register_task(do_something1, NULL, 5, 5, &handle);
+    error_code = coroutine_register_task(do_something1, NULL, 5, 5, &handle1);
     if(error_code != COROUTINE_ERROR_SUCCESS)
     {
         printf("[ERROR] coroutine_register_task():%d\n", error_code);
         return 2;
     }
 
-    error_code = coroutine_register_task(do_something2, NULL, 10, 4, &handle);
+    error_code = coroutine_register_task(do_something2, NULL, 10, 4, &handle2);
     if(error_code != COROUTINE_ERROR_SUCCESS)
     {
         printf("[ERROR] coroutine_register_task():%d\n", error_code);
