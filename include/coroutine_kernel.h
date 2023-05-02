@@ -21,19 +21,6 @@ struct CoroutineHandle
     CoroutineState state;
 };
 
-struct CoroutineContext
-{
-    struct CoroutineHandle handle;
-    void(*task)(struct CoroutineHandle* const, void* const);
-    void* parameters;
-    CoroutineTaskPeriod period;
-    CoroutineTaskPriority priority;
-    CoroutineTaskPeriod ticks_to_wait;
-    CoroutineTaskPeriod ticks_task_delayed;
-
-    CoroutineUnsignedInteger task_ready;
-};
-
 CoroutineErrorCode coroutine_init_kernel();
 
 CoroutineErrorCode coroutine_register_task

@@ -3,6 +3,19 @@
 
 #include <stdio.h>
 
+struct CoroutineContext
+{
+    struct CoroutineHandle handle;
+    void(*task)(struct CoroutineHandle* const, void* const);
+    void* parameters;
+    CoroutineTaskPeriod period;
+    CoroutineTaskPriority priority;
+    CoroutineTaskPeriod ticks_to_wait;
+    CoroutineTaskPeriod ticks_task_delayed;
+
+    CoroutineUnsignedInteger task_ready;
+};
+
 static struct CoroutineContext coroutine_contexts[COROUTINE_MAXIMUM_NUMBER_OF_TASKS + 1];
 static CoroutineUnsignedInteger coroutine_number_of_tasks = 0;
 
