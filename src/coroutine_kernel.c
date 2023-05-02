@@ -118,7 +118,7 @@ CoroutineErrorCode coroutine_spin_once()
         }
     }
 
-    coroutine_contexts[id].task(&(coroutine_contexts[id].handle), &(coroutine_contexts[id].parameters));  // タスク実行
+    coroutine_contexts[id].task(&(coroutine_contexts[id].handle), coroutine_contexts[id].parameters);  // タスク実行
 
     
     if(coroutine_contexts[id].handle.state == COROUTINE_STATE_INITIAL)  // タスクが完了した場合
