@@ -99,6 +99,27 @@ CoroutineErrorCode coroutine_register_task
     return COROUTINE_ERROR_SUCCESS;
 }
 
+CoroutineErrorCode coroutine_delete_task
+(
+    struct CoroutineHandle* const handle
+)
+{
+    if(handle->id > coroutine_number_of_tasks-1)
+    {
+        return COROUTINE_ERROR_INVALID_HANDLE;
+    }
+
+    if(handle->id != coroutine_contexts[handle->id].handle.id)
+    {
+        return COROUTINE_ERROR_INVALID_HANDLE;
+    }
+
+    coroutine_contexts[handle->id] = coroutine_contexts[coroutine_number_of_tasks-1];
+    coroutine_number_of_tasks --;
+
+    return COROUTINE_ERROR_SUCCESS;
+}
+
 CoroutineErrorCode coroutine_spin_once()
 {
     CoroutineUnsignedInteger id = 0;

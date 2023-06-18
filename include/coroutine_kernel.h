@@ -32,6 +32,11 @@ CoroutineErrorCode coroutine_register_task
     struct CoroutineHandle*
 );
 
+CoroutineErrorCode coroutine_delete_task
+(
+    struct CoroutineHandle* const
+);
+
 CoroutineErrorCode coroutine_spin_once();
 
 #ifdef __cplusplus
