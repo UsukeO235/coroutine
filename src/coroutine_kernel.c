@@ -109,11 +109,12 @@ CoroutineErrorCode coroutine_delete_task
         return COROUTINE_ERROR_INVALID_HANDLE;
     }
 
-    if(handle->id != coroutine_contexts[handle->id].handle.id)
+    if(handle->id != coroutine_contexts[handle->id].handle.id)  // 既に削除されたタスクか？
     {
         return COROUTINE_ERROR_INVALID_HANDLE;
     }
 
+    // 削除対象のタスクのコンテキストをコンテキスト配列の末尾要素で上書き
     coroutine_contexts[handle->id] = coroutine_contexts[coroutine_number_of_tasks-1];
     coroutine_number_of_tasks --;
 
