@@ -17,6 +17,8 @@ struct CoroutineContext
 static struct CoroutineContext coroutine_contexts[COROUTINE_MAXIMUM_NUMBER_OF_TASKS + 1];
 static CoroutineUnsignedInteger coroutine_number_of_tasks = 0;
 
+struct CoroutineContext* coroutine_internal_find_highest_priority_context();
+
 static void coroutine_idle_task(struct CoroutineHandle* const, void* const);
 
 CoroutineErrorCode coroutine_init_kernel()
