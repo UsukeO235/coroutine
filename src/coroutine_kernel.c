@@ -169,6 +169,34 @@ CoroutineUnsignedInteger coroutine_get_number_of_tasks()
     return coroutine_number_of_tasks;
 }
 
+struct CoroutineContext* coroutine_internal_find_highest_priority_context()
+{
+    CoroutineUnsignedInteger id = 0;
+
+    for(CoroutineUnsignedInteger i = 0; i < coroutine_number_of_tasks; i ++)
+    {
+        if(coroutine_contexts[i].ticks_to_wait <= 0)  // The task is ready to be executed
+        {
+            coroutine_contexts[i].task_ready = 1;
+            coroutine_contexts[i].ticks_to_wait = coroutine_contexts[i].period - 1;
+        }
+        else
+        {
+            coroutine_contexts[i].ticks_to_wait --;
+        }
+
+        if(coroutine_contexts[i].task_ready == 1)
+        {
+            if(coroutine_contexts[i].priority > coroutine_contexts[id].priority)
+            {
+                id = i;
+            }
+        }
+    }
+
+    return &(coroutine_contexts[id]);
+}
+
 static void coroutine_idle_task(struct CoroutineHandle* const handle, void* const parameters)
 {
 }
