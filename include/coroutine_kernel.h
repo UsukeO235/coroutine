@@ -39,6 +39,13 @@ CoroutineErrorCode coroutine_delete_task
 
 CoroutineErrorCode coroutine_spin_once();
 
+/**
+ * @brief Get the number of tasks currently registered
+ * 
+ * @return CoroutineUnsignedInteger Number of tasks
+ */
+CoroutineUnsignedInteger coroutine_get_number_of_tasks();
+
 #ifdef __cplusplus
 }
 #endif

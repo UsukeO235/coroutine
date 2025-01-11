@@ -164,6 +164,11 @@ CoroutineErrorCode coroutine_spin_once()
     return COROUTINE_ERROR_SUCCESS;
 }
 
+CoroutineUnsignedInteger coroutine_get_number_of_tasks()
+{
+    return coroutine_number_of_tasks;
+}
+
 static void coroutine_idle_task(struct CoroutineHandle* const handle, void* const parameters)
 {
 }
