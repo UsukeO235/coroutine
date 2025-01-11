@@ -1,8 +1,6 @@
 #include "coroutine_kernel.h"
 #include <stddef.h>
 
-#include <stdio.h>
-
 struct CoroutineContext
 {
     struct CoroutineHandle handle;
