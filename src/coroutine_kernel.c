@@ -123,42 +123,19 @@ CoroutineErrorCode coroutine_delete_task
 
 CoroutineErrorCode coroutine_spin_once()
 {
-    CoroutineUnsignedInteger id = 0;
-
     if(coroutine_number_of_tasks == 0)
     {
         return COROUTINE_ERROR_KERNEL_NOT_INITIALIZED;
     }
 
-    for(CoroutineUnsignedInteger i = 0; i < coroutine_number_of_tasks; i ++)
-    {
-        if(coroutine_contexts[i].ticks_to_wait <= 0)
-        {
-            coroutine_contexts[i].task_ready = 1;
+    struct CoroutineContext* highest_priority_context = coroutine_internal_find_highest_priority_context();
 
-            coroutine_contexts[i].ticks_to_wait = coroutine_contexts[i].period - 1;  // カウンタセット
-        }
-        else
-        {
-            coroutine_contexts[i].ticks_to_wait --;
-        }
-
-        if(coroutine_contexts[i].task_ready == 1)  // タスクが実行可能状態の場合
-        {
-            // 優先度最大のタスクを探す
-            if(coroutine_contexts[i].priority > coroutine_contexts[id].priority)
-            {
-                id = i;
-            }
-        }
-    }
-
-    coroutine_contexts[id].task(&(coroutine_contexts[id].handle), coroutine_contexts[id].parameters);  // タスク実行
+    highest_priority_context->task(&(highest_priority_context->handle), highest_priority_context->parameters);  // タスク実行
 
     
-    if(coroutine_contexts[id].handle.state == COROUTINE_STATE_INITIAL)  // タスクが完了した場合
+    if(highest_priority_context->handle.state == COROUTINE_STATE_INITIAL)  // タスクが完了した場合
     {
-        coroutine_contexts[id].task_ready = 0;  // タスクを待ち状態にする
+        highest_priority_context->task_ready = 0;  // タスクを待ち状態にする
     }
 
     
