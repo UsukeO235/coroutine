@@ -19,6 +19,7 @@ static CoroutineUnsignedInteger coroutine_number_of_tasks = 0;
 
 struct CoroutineContext* coroutine_internal_find_highest_priority_context();
 void coroutine_internal_execute_task(const struct CoroutineContext);
+void coroutine_internal_update_task_ready_state(struct CoroutineContext* const);
 
 static void coroutine_idle_task(struct CoroutineHandle* const, void* const);
 
@@ -134,10 +135,7 @@ CoroutineErrorCode coroutine_spin_once()
     coroutine_internal_execute_task(*highest_priority_context);
 
     
-    if(highest_priority_context->handle.state == COROUTINE_STATE_INITIAL)  // タスクが完了した場合
-    {
-        highest_priority_context->task_ready = 0;  // タスクを待ち状態にする
-    }
+    coroutine_internal_update_task_ready_state(highest_priority_context);
 
     
 
@@ -180,6 +178,14 @@ struct CoroutineContext* coroutine_internal_find_highest_priority_context()
 void coroutine_internal_execute_task(const struct CoroutineContext context)
 {
     context.task((struct CoroutineHandle* const)(&(context.handle)), context.parameters);
+}
+
+void coroutine_internal_update_task_ready_state(struct CoroutineContext* const context)
+{
+    if(context->handle.state == COROUTINE_STATE_INITIAL)  // If the task is complete
+    {
+        context->task_ready = 0;
+    }
 }
 
 static void coroutine_idle_task(struct CoroutineHandle* const handle, void* const parameters)
