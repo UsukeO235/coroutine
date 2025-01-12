@@ -76,7 +76,7 @@ CoroutineErrorCode coroutine_register_task
 
     if(coroutine_number_of_tasks >= COROUTINE_MAXIMUM_NUMBER_OF_TASKS + 1)
     {
-
+        return COROUTINE_ERROR_NUMBER_OF_TASKS_EXCEEDS_LIMIT;
     }
 
     coroutine_contexts[coroutine_number_of_tasks] = coroutine_internal_generate_initial_context(coroutine_number_of_tasks, task, parameters, period, priority);
