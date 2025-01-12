@@ -39,16 +39,7 @@ CoroutineErrorCode coroutine_init_kernel()
 
     }
 
-    coroutine_contexts[0].handle.id = 0;
-    coroutine_contexts[0].handle.state = COROUTINE_STATE_INITIAL;
-    coroutine_contexts[0].task = coroutine_idle_task;
-    coroutine_contexts[0].parameters = NULL;
-    coroutine_contexts[0].period = 1;
-    coroutine_contexts[0].priority = COROUTINE_IDLE_TASK_PRIORITY;
-    coroutine_contexts[0].ticks_to_wait = 0;
-    coroutine_contexts[0].ticks_task_delayed = 0;
-
-    coroutine_contexts[0].task_ready = 0;
+    coroutine_contexts[0] = coroutine_internal_generate_initial_context(0, coroutine_idle_task, NULL, 1, COROUTINE_IDLE_TASK_PRIORITY);
 
     coroutine_number_of_tasks = 1;
 
@@ -96,17 +87,7 @@ CoroutineErrorCode coroutine_register_task
 
     }
 
-
-    coroutine_contexts[coroutine_number_of_tasks].handle.id = coroutine_number_of_tasks;
-    coroutine_contexts[coroutine_number_of_tasks].handle.state = COROUTINE_STATE_INITIAL;
-    coroutine_contexts[coroutine_number_of_tasks].task = task;
-    coroutine_contexts[coroutine_number_of_tasks].parameters = parameters;
-    coroutine_contexts[coroutine_number_of_tasks].period = period;
-    coroutine_contexts[coroutine_number_of_tasks].priority = priority;
-    coroutine_contexts[coroutine_number_of_tasks].ticks_to_wait = 0;
-    coroutine_contexts[coroutine_number_of_tasks].ticks_task_delayed = 0;
-
-    coroutine_contexts[coroutine_number_of_tasks].task_ready = 0;
+    coroutine_contexts[coroutine_number_of_tasks] = coroutine_internal_generate_initial_context(coroutine_number_of_tasks, task, parameters, period, priority);
 
     *handle = coroutine_contexts[coroutine_number_of_tasks].handle;  // 後でタスクを操作できるようにハンドルをコピー
 
