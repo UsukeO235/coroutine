@@ -18,6 +18,7 @@ static struct CoroutineContext coroutine_contexts[COROUTINE_MAXIMUM_NUMBER_OF_TA
 static CoroutineUnsignedInteger coroutine_number_of_tasks = 0;
 
 struct CoroutineContext* coroutine_internal_find_highest_priority_context();
+void coroutine_internal_update_contexts();
 void coroutine_internal_execute_task(const struct CoroutineContext);
 void coroutine_internal_update_task_ready_state(struct CoroutineContext* const);
 
@@ -130,6 +131,8 @@ CoroutineErrorCode coroutine_spin_once()
         return COROUTINE_ERROR_KERNEL_NOT_INITIALIZED;
     }
 
+    coroutine_internal_update_contexts();
+
     struct CoroutineContext* highest_priority_context = coroutine_internal_find_highest_priority_context();
 
     coroutine_internal_execute_task(*highest_priority_context);
@@ -153,16 +156,7 @@ struct CoroutineContext* coroutine_internal_find_highest_priority_context()
 
     for(CoroutineUnsignedInteger i = 0; i < coroutine_number_of_tasks; i ++)
     {
-        if(coroutine_contexts[i].ticks_to_wait <= 0)  // The task is ready to be executed
-        {
-            coroutine_contexts[i].task_ready = 1;
-            coroutine_contexts[i].ticks_to_wait = coroutine_contexts[i].period - 1;
-        }
-        else
-        {
-            coroutine_contexts[i].ticks_to_wait --;
-        }
-
+        
         if(coroutine_contexts[i].task_ready == 1)
         {
             if(coroutine_contexts[i].priority > coroutine_contexts[id].priority)
@@ -173,6 +167,22 @@ struct CoroutineContext* coroutine_internal_find_highest_priority_context()
     }
 
     return &(coroutine_contexts[id]);
+}
+
+void coroutine_internal_update_contexts()
+{
+    for(CoroutineUnsignedInteger i = 0; i < coroutine_number_of_tasks; i ++)
+    {
+        if(coroutine_contexts[i].ticks_to_wait <= 0)  // The task is ready to be executed
+        {
+            coroutine_contexts[i].task_ready = 1;
+            coroutine_contexts[i].ticks_to_wait = coroutine_contexts[i].period - 1;
+        }
+        else
+        {
+            coroutine_contexts[i].ticks_to_wait --;
+        }
+    }
 }
 
 void coroutine_internal_execute_task(const struct CoroutineContext context)
