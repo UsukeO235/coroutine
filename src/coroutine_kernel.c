@@ -17,6 +17,7 @@ struct CoroutineContext
 static struct CoroutineContext coroutine_contexts[COROUTINE_MAXIMUM_NUMBER_OF_TASKS + 1];
 static CoroutineUnsignedInteger coroutine_number_of_tasks = 0;
 
+bool coroutine_internal_is_priority_valid(const CoroutineTaskPriority);
 bool coroutine_internal_is_handle_valid(const struct CoroutineHandle* const);
 struct CoroutineContext* coroutine_internal_find_highest_priority_context();
 void coroutine_internal_update_contexts();
@@ -147,6 +148,26 @@ CoroutineUnsignedInteger coroutine_get_number_of_tasks()
 bool coroutine_is_kernel_initialized()
 {
     return (coroutine_number_of_tasks != 0);
+}
+
+bool coroutine_internal_is_priority_valid(const CoroutineTaskPriority priority)
+{
+    if(priority < COROUTINE_TASK_LOWEST_PRIORITY)
+    {
+        return false;
+    }
+
+    if(priority <= COROUTINE_IDLE_TASK_PRIORITY)
+    {
+        return false;
+    }
+    
+    if(priority > COROUTINE_TASK_HIGHEST_PRIORITY)
+    {
+        return false;
+    }
+
+    return true;
 }
 
 bool coroutine_internal_is_handle_valid(const struct CoroutineHandle* const handle)
