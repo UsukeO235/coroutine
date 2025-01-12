@@ -1,6 +1,7 @@
 #ifndef COROUTINE_KERNEL_H
 #define COROUTINE_KERNEL_H
 
+#include <stdbool.h>
 #include "coroutine_system_defines.h"
 #include "coroutine_config.h"
 
@@ -36,6 +37,14 @@ CoroutineErrorCode coroutine_delete_task
 (
     struct CoroutineHandle* const
 );
+
+/**
+ * @brief Indicates whether the kernel is initialized
+ * 
+ * @return true Initialized
+ * @return false NOT initialized
+ */
+bool coroutine_is_kernel_initialized();
 
 CoroutineErrorCode coroutine_spin_once();
 

@@ -150,6 +150,11 @@ CoroutineUnsignedInteger coroutine_get_number_of_tasks()
     return coroutine_number_of_tasks;
 }
 
+bool coroutine_is_kernel_initialized()
+{
+    return (coroutine_number_of_tasks != 0);
+}
+
 struct CoroutineContext* coroutine_internal_find_highest_priority_context()
 {
     CoroutineUnsignedInteger id = 0;
