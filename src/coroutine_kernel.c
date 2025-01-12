@@ -54,14 +54,14 @@ CoroutineErrorCode coroutine_register_task
     void* const parameters,
     const CoroutineTaskPeriod period,
     const CoroutineTaskPriority priority,
-    struct CoroutineHandle* handle
+    struct CoroutineHandle* const handle
 )
 {
     if(!coroutine_is_kernel_initialized())
     {
         return COROUTINE_ERROR_KERNEL_NOT_INITIALIZED;
     }
-    
+
     if(period <= 0)
     {
         return COROUTINE_ERROR_ARGUMENT_RANGE;
@@ -118,12 +118,7 @@ CoroutineErrorCode coroutine_delete_task
         return COROUTINE_ERROR_KERNEL_NOT_INITIALIZED;
     }
     
-    if(handle->id > coroutine_number_of_tasks-1)
-    {
-        return COROUTINE_ERROR_INVALID_HANDLE;
-    }
-
-    if(handle->id != coroutine_contexts[handle->id].handle.id)  // 既に削除されたタスクか？
+    if(!coroutine_internal_is_handle_valid(handle))
     {
         return COROUTINE_ERROR_INVALID_HANDLE;
     }

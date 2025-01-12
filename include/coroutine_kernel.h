@@ -30,7 +30,7 @@ CoroutineErrorCode coroutine_register_task
     void* const,
     const CoroutineTaskPeriod,
     const CoroutineTaskPriority,
-    struct CoroutineHandle*
+    struct CoroutineHandle* const
 );
 
 CoroutineErrorCode coroutine_delete_task
