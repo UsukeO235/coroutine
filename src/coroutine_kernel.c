@@ -62,7 +62,7 @@ CoroutineErrorCode coroutine_register_task
         return COROUTINE_ERROR_KERNEL_NOT_INITIALIZED;
     }
 
-    if(period <= 0)
+    if(!coroutine_internal_is_period_valid(period))
     {
         return COROUTINE_ERROR_ARGUMENT_RANGE;
     }
