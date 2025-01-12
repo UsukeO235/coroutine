@@ -66,17 +66,7 @@ CoroutineErrorCode coroutine_register_task
         return COROUTINE_ERROR_ARGUMENT_RANGE;
     }
 
-    if(priority < COROUTINE_TASK_LOWEST_PRIORITY)
-    {
-        return COROUTINE_ERROR_ARGUMENT_RANGE;
-    }
-
-    if(priority <= COROUTINE_IDLE_TASK_PRIORITY)
-    {
-        return COROUTINE_ERROR_ARGUMENT_RANGE;
-    }
-    
-    if(priority > COROUTINE_TASK_HIGHEST_PRIORITY)
+    if(!coroutine_internal_is_priority_valid(priority))
     {
         return COROUTINE_ERROR_ARGUMENT_RANGE;
     }
