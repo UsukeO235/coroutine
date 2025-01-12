@@ -81,7 +81,7 @@ CoroutineErrorCode coroutine_register_task
 
     coroutine_contexts[coroutine_number_of_tasks] = coroutine_internal_generate_initial_context(coroutine_number_of_tasks, task, parameters, period, priority);
 
-    *handle = coroutine_contexts[coroutine_number_of_tasks].handle;  // 後でタスクを操作できるようにハンドルをコピー
+    *handle = coroutine_contexts[coroutine_number_of_tasks].handle;  // Copy the task handle for later use
 
     coroutine_number_of_tasks ++;
 
@@ -103,7 +103,8 @@ CoroutineErrorCode coroutine_delete_task
         return COROUTINE_ERROR_INVALID_HANDLE;
     }
 
-    // 削除対象のタスクのコンテキストをコンテキスト配列の末尾要素で上書き
+    // Overwrites the context of the task to be deleted with the last element of the context array
+    // After this operation, the last element of the context array is NOT accessible
     coroutine_contexts[handle->id] = coroutine_contexts[coroutine_number_of_tasks-1];
     coroutine_number_of_tasks --;
 
