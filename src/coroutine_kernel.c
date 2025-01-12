@@ -34,6 +34,11 @@ struct CoroutineContext coroutine_internal_generate_initial_context(
 
 static void coroutine_idle_task(struct CoroutineHandle* const, void* const);
 
+/**
+ * @brief Initialize the coroutine kernel
+ * 
+ * @return CoroutineErrorCode Error code
+ */
 CoroutineErrorCode coroutine_init_kernel()
 {
     if(coroutine_number_of_tasks != 0)
@@ -48,6 +53,16 @@ CoroutineErrorCode coroutine_init_kernel()
     return COROUTINE_ERROR_SUCCESS;
 }
 
+/**
+ * @brief Register the new task
+ * 
+ * @param [in] task Function pointer to the task to be registered
+ * @param [in] parameters Pointer to the parameters that will be passed to the task
+ * @param [in] period Interval at which the task is executed (in ticks)
+ * @param [in] priority Priority of the task. Higher values represent higher priority
+ * @param [out] handle Pointer to a variable that will be populated with a handle for the registered task
+ * @return CoroutineErrorCode Error code
+ */
 CoroutineErrorCode coroutine_register_task
 (
     void(*task)(struct CoroutineHandle* const, void* const),
@@ -88,6 +103,12 @@ CoroutineErrorCode coroutine_register_task
     return COROUTINE_ERROR_SUCCESS;
 }
 
+/**
+ * @brief Delete the task
+ * 
+ * @param [in] handle Pointer to a handle for the task to be deleted
+ * @return CoroutineErrorCode Error code
+ */
 CoroutineErrorCode coroutine_delete_task
 (
     struct CoroutineHandle* const handle
@@ -111,6 +132,11 @@ CoroutineErrorCode coroutine_delete_task
     return COROUTINE_ERROR_SUCCESS;
 }
 
+/**
+ * @brief Execute a single iteration of the coroutine scheduler
+ * 
+ * @return CoroutineErrorCode Error code
+ */
 CoroutineErrorCode coroutine_spin_once()
 {
     if(!coroutine_is_kernel_initialized())
