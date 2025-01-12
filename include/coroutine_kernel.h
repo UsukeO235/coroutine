@@ -1,6 +1,7 @@
 #ifndef COROUTINE_KERNEL_H
 #define COROUTINE_KERNEL_H
 
+#include <stdbool.h>
 #include "coroutine_system_defines.h"
 #include "coroutine_config.h"
 
@@ -29,7 +30,7 @@ CoroutineErrorCode coroutine_register_task
     void* const,
     const CoroutineTaskPeriod,
     const CoroutineTaskPriority,
-    struct CoroutineHandle*
+    struct CoroutineHandle* const
 );
 
 CoroutineErrorCode coroutine_delete_task
@@ -37,7 +38,22 @@ CoroutineErrorCode coroutine_delete_task
     struct CoroutineHandle* const
 );
 
+/**
+ * @brief Indicates whether the kernel is initialized
+ * 
+ * @return true Initialized
+ * @return false NOT initialized
+ */
+bool coroutine_is_kernel_initialized();
+
 CoroutineErrorCode coroutine_spin_once();
+
+/**
+ * @brief Get the number of tasks currently registered
+ * 
+ * @return CoroutineUnsignedInteger Number of tasks
+ */
+CoroutineUnsignedInteger coroutine_get_number_of_tasks();
 
 #ifdef __cplusplus
 }
