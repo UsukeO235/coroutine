@@ -56,6 +56,11 @@ CoroutineErrorCode coroutine_register_task
     struct CoroutineHandle* handle
 )
 {
+    if(!coroutine_is_kernel_initialized())
+    {
+        return COROUTINE_ERROR_KERNEL_NOT_INITIALIZED;
+    }
+    
     if(period <= 0)
     {
         return COROUTINE_ERROR_ARGUMENT_RANGE;
@@ -107,6 +112,11 @@ CoroutineErrorCode coroutine_delete_task
     struct CoroutineHandle* const handle
 )
 {
+    if(!coroutine_is_kernel_initialized())
+    {
+        return COROUTINE_ERROR_KERNEL_NOT_INITIALIZED;
+    }
+    
     if(handle->id > coroutine_number_of_tasks-1)
     {
         return COROUTINE_ERROR_INVALID_HANDLE;
@@ -126,7 +136,7 @@ CoroutineErrorCode coroutine_delete_task
 
 CoroutineErrorCode coroutine_spin_once()
 {
-    if(coroutine_number_of_tasks == 0)
+    if(!coroutine_is_kernel_initialized())
     {
         return COROUTINE_ERROR_KERNEL_NOT_INITIALIZED;
     }
