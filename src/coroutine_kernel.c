@@ -22,6 +22,13 @@ struct CoroutineContext* coroutine_internal_find_highest_priority_context();
 void coroutine_internal_update_contexts();
 void coroutine_internal_execute_task(const struct CoroutineContext);
 void coroutine_internal_update_task_ready_state(struct CoroutineContext* const);
+struct CoroutineContext coroutine_internal_generate_initial_context(
+    const CoroutineUnsignedInteger number_of_tasks,
+    void(*task)(struct CoroutineHandle* const, void* const),
+    void* const parameters,
+    const CoroutineTaskPeriod period,
+    const CoroutineTaskPriority priority
+);
 
 static void coroutine_idle_task(struct CoroutineHandle* const, void* const);
 
@@ -227,6 +234,30 @@ void coroutine_internal_update_task_ready_state(struct CoroutineContext* const c
     {
         context->task_ready = 0;
     }
+}
+
+struct CoroutineContext coroutine_internal_generate_initial_context
+(
+    const CoroutineUnsignedInteger number_of_tasks,
+    void(*task)(struct CoroutineHandle* const, void* const),
+    void* const parameters,
+    const CoroutineTaskPeriod period,
+    const CoroutineTaskPriority priority
+)
+{
+    struct CoroutineContext context;
+
+    context.handle.id = coroutine_number_of_tasks;
+    context.handle.state = COROUTINE_STATE_INITIAL;
+    context.task = task;
+    context.parameters = parameters;
+    context.period = period;
+    context.priority = priority;
+    context.ticks_to_wait = 0;
+    context.ticks_task_delayed = 0;
+    context.task_ready = 0;
+
+    return context;
 }
 
 static void coroutine_idle_task(struct CoroutineHandle* const handle, void* const parameters)
